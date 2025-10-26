@@ -44,9 +44,8 @@ impl UefiDisplay {
             .ok_or(UefiDisplayError::InvalidResolution)?;
 
         // Allocate zeroed buffer to avoid UB
-        // Clippy disliked resizing, so make with capacity, then fill
-        let mut buffer = Vec::with_capacity(buf_len as usize);
-        buffer.fill(0);
+        let mut buffer = Vec::new();
+        buffer.resize(buf_len as usize, 0);
 
         let mut display = UefiDisplay {
             fb_ptr: frame_buffer.as_mut_ptr(),
