@@ -1,6 +1,6 @@
 [package]
 name = "uefi-graphics2"
-version = "0.6.0"
+version = "0.6.2"
 edition = "2021"
 authors = ["theaddonn <theaddonn@gmail.com>"]
 readme = "README.md"
@@ -11,7 +11,7 @@ keywords = ["uefi", "graphics", "no-std", "embedded"]
 categories = ["no-std", "embedded", "hardware-support"]
 
 [dependencies]
-uefi = { version = "0.36.0", features = [
+uefi = { version = "0.36", features = [
     "panic_handler",
     "global_allocator",
     "alloc",

@@ -47,7 +47,7 @@ fn main() -> Status {
     // Flush everything
     display.flush();
 
-    // wait 10000000 microseconds (10 seconds)
+    // wait 10 seconds
     boot::stall(Duration::from_secs(10));
 
     Status::SUCCESS

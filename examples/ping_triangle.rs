@@ -6,7 +6,8 @@ extern crate alloc;
 use core::time::Duration;
 
 use embedded_graphics::geometry::Point;
-use embedded_graphics::pixelcolor::{Rgb888, WebColors};
+use embedded_graphics::pixelcolor::Rgb888;
+use embedded_graphics::prelude::RgbColor;
 use embedded_graphics::primitives::{PrimitiveStyle, StyledDrawable, Triangle};
 use uefi::prelude::*;
 use uefi::proto::console::gop::GraphicsOutput;
@@ -38,7 +39,7 @@ fn main() -> Status {
     // Draw the text on the display
     triangle
         .draw_styled(
-            &mut PrimitiveStyle::with_fill(Rgb888::CSS_PINK),
+            &mut PrimitiveStyle::with_fill(Rgb888::MAGENTA),
             &mut display,
         )
         .unwrap();
@@ -46,7 +47,7 @@ fn main() -> Status {
     // Flush everything
     display.flush();
 
-    // wait 10000000 microseconds (10 seconds)
+    // wait 10 seconds
     boot::stall(Duration::from_secs(10));
 
     Status::SUCCESS

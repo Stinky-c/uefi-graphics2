@@ -9,9 +9,9 @@ using the [`embedded-graphics`](https://crates.io/crates/embedded-graphics) crat
 
 Supports:
 
-- [X] Double buffering
-- [X] Display resizing
-- [X] An extensive draw/render library using the [`embedded-graphics`](https://crates.io/crates/embedded-graphics) crate
+- [x] Double buffering
+- [x] Display resizing
+- [x] An extensive draw/render library using the [`embedded-graphics`](https://crates.io/crates/embedded-graphics) crate
 
 ### Why are there 2 other crates for this job?
 
@@ -21,7 +21,7 @@ sadly both seem to either lack some of the necessary functionality or are comple
 
 ## Example
 
-Here is a simple example with using the [`uefi`](https://crates.io/crates/uefi) crate on version `0.30.0`:
+Here is a simple example with using the [`uefi`](https://crates.io/crates/uefi) crate on version `0.36.0`:
 
 ```rust
 #![no_main]
@@ -29,12 +29,12 @@ Here is a simple example with using the [`uefi`](https://crates.io/crates/uefi) 
 
 extern crate alloc;
 
-use embedded_graphics::geometry::Point;
-use embedded_graphics::mono_font::ascii::FONT_6X10;
-use embedded_graphics::mono_font::MonoTextStyle;
+use core::time::Duration;
+
+use embedded_graphics::mono_font::{ascii::FONT_6X10, MonoTextStyle};
 use embedded_graphics::pixelcolor::Rgb888;
+use embedded_graphics::prelude::*;
 use embedded_graphics::text::Text;
-use embedded_graphics::Drawable;
 use uefi::prelude::*;
 use uefi::proto::console::gop::GraphicsOutput;
 
@@ -42,35 +42,35 @@ use uefi_graphics2::UefiDisplay;
 
 #[entry]
 fn main() -> Status {
-  uefi::helpers::init().unwrap();
+    uefi::helpers::init().unwrap();
 
-  // Disable the watchdog timer
-  boot::set_watchdog_timer(0, 0x10000, None).unwrap();
+    // Disable the watchdog timer
+    boot::set_watchdog_timer(0, 0x10000, None).unwrap();
 
-  // Get gop
-  let gop_handle = boot::get_handle_for_protocol::<GraphicsOutput>().unwrap();
-  let mut gop = boot::open_protocol_exclusive::<GraphicsOutput>(gop_handle).unwrap();
+    // Get gop
+    let gop_handle = boot::get_handle_for_protocol::<GraphicsOutput>().unwrap();
+    let mut gop = boot::open_protocol_exclusive::<GraphicsOutput>(gop_handle).unwrap();
 
-  // Create UefiDisplay
-  let mode = gop.current_mode_info();
-  let mut display = UefiDisplay::new(gop.frame_buffer(), mode).unwrap();
+    // Create UefiDisplay
+    let mode = gop.current_mode_info();
+    let mut display = UefiDisplay::new(gop.frame_buffer(), mode).unwrap();
 
-  // Create a new character style
-  let style = MonoTextStyle::new(&FONT_6X10, Rgb888::WHITE);
+    // Create a new character style
+    let style = MonoTextStyle::new(&FONT_6X10, Rgb888::WHITE);
 
-  // Create a new text
-  let text = Text::new("Hello World!", Point { x: 30, y: 100 }, style);
+    // Create a new text
+    let text = Text::new("Hello World!", Point { x: 30, y: 100 }, style);
 
-  // Draw the text on the display
-  text.draw(&mut display).unwrap();
+    // Draw the text on the display
+    text.draw(&mut display).unwrap();
 
-  // Flush everything
-  display.flush();
+    // Flush everything
+    display.flush();
 
-  // wait 10000000 microseconds (10 seconds)
-  boot::stall(10_000_000);
+    // wait 10 seconds
+    boot::stall(Duration::from_secs(10));
 
-  Status::SUCCESS
+    Status::SUCCESS
 }
 ```
 
