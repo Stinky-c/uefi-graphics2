@@ -3,6 +3,8 @@
 
 extern crate alloc;
 
+use core::time::Duration;
+
 use embedded_graphics::geometry::Point;
 use embedded_graphics::pixelcolor::{Rgb888, WebColors};
 use embedded_graphics::primitives::{PrimitiveStyle, StyledDrawable, Triangle};
@@ -45,7 +47,7 @@ fn main() -> Status {
     display.flush();
 
     // wait 10000000 microseconds (10 seconds)
-    boot_services.stall(10_000_000);
+    boot::stall(Duration::from_secs(10));
 
     Status::SUCCESS
 }

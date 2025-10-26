@@ -3,10 +3,13 @@
 
 extern crate alloc;
 
+use core::time::Duration;
+
 use embedded_graphics::geometry::Point;
 use embedded_graphics::mono_font::ascii::FONT_6X10;
 use embedded_graphics::mono_font::MonoTextStyle;
 use embedded_graphics::pixelcolor::Rgb888;
+use embedded_graphics::prelude::WebColors;
 use embedded_graphics::text::Text;
 use embedded_graphics::Drawable;
 use uefi::prelude::*;
@@ -30,7 +33,7 @@ fn main() -> Status {
     let mut display = UefiDisplay::new(gop.frame_buffer(), mode).unwrap();
 
     // Create a new character style
-    let style = MonoTextStyle::new(&FONT_6X10, Rgb888::WHITE);
+    let style = MonoTextStyle::new(&FONT_6X10, Rgb888::CSS_WHITE);
 
     // Create a new text
     let text = Text::new("Hello World!", Point { x: 30, y: 100 }, style);
@@ -42,7 +45,7 @@ fn main() -> Status {
     display.flush();
 
     // wait 10000000 microseconds (10 seconds)
-    boot::stall(10_000_000);
+    boot::stall(Duration::from_secs(10));
 
     Status::SUCCESS
 }

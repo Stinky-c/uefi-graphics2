@@ -11,22 +11,23 @@ keywords = ["uefi", "graphics", "no-std", "embedded"]
 categories = ["no-std", "embedded", "hardware-support"]
 
 [dependencies]
-uefi = "0.35"
+uefi = { version = "0.36.0", features = [
+    "panic_handler",
+    "global_allocator",
+    "alloc",
+] }
 embedded-graphics = "0.8"
 thiserror = { version = "2.0", default-features = false }
 
-[[example]]
-name = "cyan_display"
-required-features = [ "uefi/global_allocator" ]
 
 [[example]]
 name = "hello_world"
-required-features = [ "uefi/global_allocator" ]
+# required-features = ["uefi/global_allocator"]
 
 [[example]]
 name = "yellow_rectangle"
-required-features = [ "uefi/global_allocator" ]
+required-features = ["uefi/global_allocator"]
 
 [[example]]
 name = "ping_triangle"
-required-features = [ "uefi/global_allocator" ]
+required-features = ["uefi/global_allocator"]
